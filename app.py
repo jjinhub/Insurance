@@ -5,6 +5,11 @@ from flask import Flask, render_template, request, make_response, jsonify, redir
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SECRET_KEY'
 
+# 홈(로그인) 페이지 라우트
+@app.route('/')
+def home():
+    return render_template('hos_login.html')
+
 # 애플리케이션 실행
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
