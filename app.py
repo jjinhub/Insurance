@@ -10,6 +10,11 @@ app.config['SECRET_KEY'] = 'SECRET_KEY'
 def home():
     return render_template('hos_login.html')
 
+# 회원가입 페이지
+@app.route('/signup')
+def signup():
+    return render_template('hos_signup.html')
+
 # 애플리케이션 실행
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=False)
