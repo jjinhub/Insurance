@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <title>병원 회원가입</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: 'Montserrat', sans-serif;
+        margin: 0;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      .background {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #ffffff;
+        padding: 20px;
+      }
+      .outer__box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        max-width: 700px;
+        width: 100%;
+        border: 1px solid #aacdff;
+        box-shadow: 7px 7px 39px 0px rgba(0, 104, 255, 0.25);
+        border-radius: 20px;
+        padding: 50px;
+      }
+      .signup__title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #0e76dd;
+        margin-bottom: 50px;
+      }
+      .input__wrapper {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 30px;
+      }
+      .input__field {
+        flex-grow: 1;
+        border: none;
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+        font-size: 16px;
+        outline: none;
+        width: 100%;
+        margin-right: 10px;
+      }
+      .input__field:focus {
+        border-bottom: 2px solid #0068ff;
+      }
+      .button__container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-top: 20px;
+      }
+      .submit__button {
+        background-color: #e6f0fd;
+        border: none;
+        border-radius: 4px;
+        color: #0e0d0d;
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        width: 200px;
+        font-weight: bold;
+      }
+      .submit__button:hover {
+        background-color: #0056b3;
+      }
+      #registrationMessage {
+        display: none;
+        text-align: center;
+        margin-top: 20px;
+      }
+      #registrationMessage p {
+        font-size: 18px;
+        font-weight: bold;
+        color: #0e76dd;
+      }
+      #registrationMessage button {
+        background-color: #e6f0fd;
+        border: none;
+        border-radius: 4px;
+        color: #0e0d0d;
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      #registrationMessage button:hover {
+        background-color: #0056b3;
+      }
+      .message-box {
+            display: none;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .message-box button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .message-box button:hover {
+            background-color: #45a049;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="background">
+      <div class="outer__box">
+      </form>
+      <div class="message-box" id="registrationMessage">
+        <p id="messageContent"></p>
+        <button onclick="hideMessageBox()">확인</button>
+    </div>
+    <div id="requestStatusMessage" style="display: none; text-align: center; margin-top: 20px;">
+      <p id="requestStatusContent" style="font-size: 18px; font-weight: bold; color: #0e76dd;"></p>
+    </div>
+        <h2 class="signup__title">회원가입 정보를 입력해주세요</h2>
+        <form id="signupForm" action="/submit_signup" method="POST">
+          <div class="input__wrapper">
+            <input
+              class="input__field"
+              type="text"
+              placeholder="병원 이름"
+              name="hospital_name"
+              required
+            />
+          </div>
+          <div class="input__wrapper">
+            <select
+              class="input__field"
+              name="hospital_type"
+              required
+              title="병원 유형을 선택하세요"
+              id="hospital_type"
+            >
+              <option value="">병원 유형 선택</option>
+              <option value="clinic">의원</option>
+              <option value="oriental_clinic">한의원</option>
+              <option value="hospital">병원</option>
+              <option value="oriental_hospital">한방병원</option>
+            </select>
+          </div>
+          <div class="input__wrapper">
+            <input
+              class="input__field"
+              type="text"
+              placeholder="ID"
+              name="id"
+              required
+            />
+          </div>
+          <div class="input__wrapper">
+            <input
+              class="input__field"
+              type="password"
+              placeholder="비밀번호"
+              name="password"
+              required
+            />
+          </div>
+          <div class="input__wrapper">
+            <input
+              class="input__field"
+              type="tel"
+              placeholder="전화번호"
+              name="phone_number"
+              required
+            />
+          </div>
+          <div class="button__container">
+            <button type="submit" class="submit__button">회원가입 요청</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var formData = new FormData(this);
+      var userId = formData.get('id'); // 폼 데이터에서 사용자 ID를 가져옵니다.
+
+      // 회원가입 요청을 서버로 보냅니다.
+      fetch('/submit_signup', {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        
+        // 회원가입 요청 상태 메시지를 표시합니다.
+        var requestStatusContent = document.getElementById('requestStatusContent');
+        requestStatusContent.textContent = data.message;
+        var requestStatusMessage = document.getElementById('requestStatusMessage');
+        requestStatusMessage.style.display = 'block';
+
+        // 회원가입 상태를 주기적으로 확인합니다.
+        checkRegistrationStatus(userId);
+      })
+      .catch(error => console.error('Error:', error));
+    });
+
+    // 회원가입 상태를 주기적으로 확인하는 함수
+    function checkRegistrationStatus(userId) {
+        var checkInterval = setInterval(function() {
+            fetch('/check_registration_status?user_id=' + encodeURIComponent(userId))
+            .then(response => response.json())
+            .then(data => {
+              if (data.registrationStatus === 'approved') {
+                  // 승인 상태면 요청 상태 메시지를 숨기고, 완료 메시지 박스를 표시합니다.
+                  clearInterval(checkInterval);
+                  hideRequestStatusMessage();
+                  showRegistrationCompleteMessage();
+              } else if (data.registrationStatus === 'reject') {
+                  clearInterval(checkInterval);
+                  showRegistrationFailMessage();
+              } 
+              // else {
+              //     clearInterval(checkInterval);
+              //     // hideRequestStatusMessage();
+              //     showRegistrationFailMessage();
+              // }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                clearInterval(checkInterval);
+            });
+        }, 5000);
+    }
+
+    // 회원가입 요청 상태 메시지를 숨기는 함수
+    function hideRequestStatusMessage() {
+        var requestStatusMessage = document.getElementById('requestStatusMessage');
+        requestStatusMessage.style.display = 'none';
+    }
+
+    // 회원가입 완료 메시지를 표시하는 함수
+    function showRegistrationCompleteMessage() {
+        var messageBox = document.getElementById('registrationMessage');
+        var messageContent = document.getElementById('messageContent');
+        messageContent.textContent = "회원가입이 완료되었습니다. 로그인 페이지로 이동해 주세요.";
+        messageBox.style.display = 'block';
+    }
+
+    // 회원가입 실패 메시지를 표시하는 함수
+    function showRegistrationFailMessage() {
+        var messageBox = document.getElementById('registrationMessage');
+        var messageContent = document.getElementById('messageContent');
+        messageContent.textContent = "회원가입이 거절되었습니다. 로그인 페이지로 이동해 주세요.";
+        messageBox.style.display = 'block';
+    }
+
+    // 메시지 박스를 숨기고 페이지를 리디렉션하는 함수
+    function hideMessageBox() {
+        var messageBox = document.getElementById('registrationMessage');
+        messageBox.style.display = 'none';
+        window.location.href = '/'; // 로그인 페이지로 리디렉션합니다.
+    }
+
+    function redirectToPaLoginIfHospital() {
+        var hospitalTypeSelect = document.getElementById('hospital_type');
+        if (hospitalTypeSelect.value === 'hospital') {
+        window.location.href = 'pa_login.html'; // 병원 유형이 '병원'일 경우 리디렉션
+          }
+    }
+
+  </script>
+  </body>
+</html>
