@@ -5,6 +5,18 @@ from flask import Flask, render_template, request, make_response, jsonify, redir
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SECRET_KEY'
 
+# DB 로드
+con = duckdb.connect(database='./instance/members.duckdb', read_only=False)
+
+# 클라이언트 및 서비스 설정
+demo_client_id = ''
+demo_client_secret = ''
+public_key = ''
+
+codef = Codef()
+codef.public_key = public_key
+codef.set_demo_client_info(demo_client_id, demo_client_secret)
+
 # 홈(로그인) 페이지 라우트
 @app.route('/')
 def home():
